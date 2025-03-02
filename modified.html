@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            background-color: #f4f4f4;
+        }
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            color: white;
+            height: 100vh;
+            padding: 20px;
+            position: fixed;
+        }
+        .sidebar h2 {
+            text-align: center;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 15px;
+            border-bottom: 1px solid #444;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .sidebar ul li i {
+            margin-right: 10px;
+        }
+        .sidebar ul li:hover {
+            background: #34495e;
+        }
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+            flex: 1;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .feedback {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .input-container {
+            margin-top: 20px;
+        }
+        .input-container input, .input-container select {
+            padding: 8px;
+            margin-right: 10px;
+        }
+        .input-container input {
+            width: 80px;
+        }
+        .input-container button {
+            padding: 8px 15px;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .hidden {
+            display: none;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .description {
+            margin-top: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li onclick="showHome()"><i class="fas fa-home"></i> Home</li>
+            <li onclick="showCourses()"><i class="fas fa-book"></i> Courses</li>
+            <li onclick="showGrades()"><i class="fas fa-chart-pie"></i> Grades</li>
+            <li onclick="showReports()"><i class="fas fa-file-alt"></i> Reports</li>
+            <li onclick="showSettings()"><i class="fas fa-cog"></i> Settings</li>
+            <li onclick="showHelp()"><i class="fas fa-question-circle"></i> Help</li>
+            <li onclick="logout()"><i class="fas fa-sign-out-alt"></i> Log Out</li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <div id="home" class="card">
+            <h2>Welcome, Student!</h2>
+            <p>Your current GPA: <strong id="cgpa">3.8</strong></p>
+            <div class="description">
+                <h3>About the Grade Evaluation System</h3>
+                <p>The Grade Evaluation System helps students keep track of their academic performance. 
+                   It provides a comprehensive view of your grades across all subjects, helping you stay 
+                   on top of your academic journey. With features like personalized feedback, performance 
+                   analysis, and goal setting, this system aims to enhance your learning experience and 
+                   improve your grades.</p>
+                <p>Our system also allows you to set academic goals and track your progress toward 
+                   achieving them. By evaluating your strengths and areas for improvement, you can make 
+                   informed decisions and continuously enhance your performance.</p>
+                <p>Stay motivated and keep improving your skills!</p>
+            </div>
+        </div>
+        <div id="courses" class="card hidden">
+            <h2>Courses</h2>
+            <ul>
+                <li><strong>Semester 1</strong></li>
+                <li>Math</li>
+                <li>Science</li>
+                <li>History</li>
+                <li>English</li>
+                <li><strong>Semester 2</strong></li>
+                <li>Physics</li>
+                <li>Chemistry</li>
+                <li>Biology</li>
+                <li>Literature</li>
+            </ul>
+        </div>
+        <div id="grades" class="card hidden">
+            <h2>Grade Distribution</h2>
+            <canvas id="gradeChart"></canvas>
+            <div class="input-container">
+                <select id="subjectSelect"></select>
+                <input type="number" id="mark" placeholder="New Mark" min="0" max="100">
+                <button onclick="updateChart()">Update Grade</button>
+            </div>
+        </div>
+        <div id="reports" class="card hidden">
+            <h2>Reports</h2>
+            <p>Your reports will be available here.</p>
+        </div>
+        <div id="settings" class="card hidden">
+            <h2>Settings</h2>
+            <h3>Edit Profile</h3>
+            <div class="form-group">
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" value="John Doe">
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="text" id="phoneNumber" value="123-456-7890">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" value="johndoe@example.com">
+            </div>
+            <div class="form-group">
+                <label for="personalInfo">Personal Information:</label>
+                <textarea id="personalInfo" rows="4">I am a dedicated student pursuing my studies.</textarea>
+            </div>
+            <button onclick="saveProfileChanges()">Save Changes</button>
+            <p id="confirmationMessage" style="color: green; margin-top: 15px; display: none;">Profile updated successfully!</p>
+        </div>
+        <div id="help" class="card hidden">
+            <h2>Help</h2>
+            <p>If you need assistance, feel free to contact support.</p>
+        </div>
+    </div>
+
+    <script>
+        // Dynamic Sections
+        function showHome() {
+            hideAll();
+            document.getElementById('home').classList.remove('hidden');
+        }
+        
+        function showCourses() {
+            hideAll();
+            document.getElementById('courses').classList.remove('hidden');
+        }
+
+        function showGrades() {
+            hideAll();
+            document.getElementById('grades').classList.remove('hidden');
+        }
+
+        function showReports() {
+            hideAll();
+            document.getElementById('reports').classList.remove('hidden');
+        }
+
+        function showSettings() {
+            hideAll();
+            document.getElementById('settings').classList.remove('hidden');
+        }
+
+        function showHelp() {
+            hideAll();
+            document.getElementById('help').classList.remove('hidden');
+        }
+
+        function hideAll() {
+            const sections = ['home', 'courses', 'grades', 'reports', 'settings', 'help'];
+            sections.forEach(section => {
+                document.getElementById(section).classList.add('hidden');
+            });
+        }
+
+        // Logout Functionality
+        function logout() {
+            alert('You have logged out.');
+            // You can redirect to login page here.
+        }
+
+        // Profile Save Changes
+        function saveProfileChanges() {
+            const fullName = document.getElementById('fullName').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const email = document.getElementById('email').value;
+            const personalInfo = document.getElementById('personalInfo').value;
+
+            // Here, you can save these changes to the database or local storage
+            // For demonstration, we're just showing a confirmation message
+            document.getElementById('confirmationMessage').style.display = 'block';
+
+            // Optionally, you could hide the confirmation message after a few seconds
+            setTimeout(() => {
+                document.getElementById('confirmationMessage').style.display = 'none';
+            }, 3000);
+        }
+
+        // Initialize Grades Chart (Pie chart for Subjects)
+        const ctx = document.getElementById('gradeChart').getContext('2d');
+        const gradeChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Math', 'Science', 'History', 'English'],  // Subjects
+                datasets: [{
+                    label: 'Subjects',
+                    data: [85, 90, 70, 88],  // Dummy grades data
+                    backgroundColor: ['#3498db', '#2ecc71', '#f39c12', '#e74c3c'],
+                }]
+            }
+        });
+
+        // Dynamic Grade Update Function
+        function updateChart() {
+            const subjectSelect = document.getElementById('subjectSelect');
+            const selectedIndex = subjectSelect.value;
+            let newMark = parseInt(document.getElementById('mark').value);
+            
+            if (!isNaN(newMark) && selectedIndex !== '') {
+                newMark = Math.max(0, Math.min(100, newMark));  // Ensure mark is between 0 and 100
+                let marks = [85, 90, 70, 88];  // Initial marks
+                marks[selectedIndex] = newMark;  // Update selected subject's grade
+                
+                gradeChart.data.datasets[0].data = marks;  // Update chart data
+                gradeChart.update();  // Re-render chart
+            }
+        }
+
+        // Populate the subject dropdown dynamically
+        const subjects = ['Math', 'Science', 'History', 'English'];
+        const subjectSelect = document.getElementById('subjectSelect');
+        subjects.forEach((subject, index) => {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = subject;
+            subjectSelect.appendChild(option);
+        });
+
+        // Show Home Page by default
+        showHome();
+    </script>
+</body>
+</html>

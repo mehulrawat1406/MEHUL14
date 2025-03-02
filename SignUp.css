@@ -1,0 +1,96 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #ffffff; /* dark background */
+}
+
+.container {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #233158; /* dark background with some transparency */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.form-wrap {
+    padding: 20px;
+    background-color: #ffffff; /* dark background with some transparency */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+    font-size: 24px;
+    color: #0a0505; /* white text */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #0d0b0b; /* white text */
+    border:#0a0505;
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border:#0a0505;
+    border-radius: 10px;
+    background-color: #ffffff; /* dark background with some transparency */
+    color: #090606; /* white text */
+}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+
+    background-color: #ffffff; /* dark background with some transparency */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border:#0a0505;
+    border-radius: 10px;
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #b31717e8; /* dark background with some transparency */
+    color: #fff; /* white text */
+    cursor: pointer;
+
+    
+}
+
+button[type="submit"]:hover {
+    background-color: #c6c8d3; /* dark background with some transparency */
+}
+
+
+
+p {
+    font-size: 16px;
+    color: #160b0b; /* white text */
+    text-align: center;
+    margin-top: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: #0a0606; /* white text */
+}
+
+
+
+/* Vintage effect */
+.form-wrap {
+    filter: grayscale(0.5) contrast(1.2) brightness(0.8);
+    transition: filter 0.3s ease-in-out;
+}
+
+.form-wrap:hover {
+    filter: grayscale(0) contrast(1) brightness(1);
+}
